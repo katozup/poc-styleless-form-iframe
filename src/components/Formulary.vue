@@ -194,6 +194,10 @@ export default {
       colorSecondary: '#0D456F',
     };
   },
+  mounted() {
+    this.colorPrimary = `#${this.getParameterByName('colorPrimary')}`;
+    this.colorSecondary = `#${this.getParameterByName('colorSecondary')}`;
+  },
   computed: {
     fontPrimary() {
       return {
@@ -207,6 +211,15 @@ export default {
     },
   },
   methods: {
+    getParameterByName(name) {
+      const url = window.location.href;
+      const nameAux = name;
+      const regex = new RegExp(`[?&]${nameAux}(=([^&#]*)|&|#|$)`);
+      const results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    },
     checkForm(e) {
       if (this.name && this.age) {
         return true;
